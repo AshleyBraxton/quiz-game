@@ -1,0 +1,31 @@
+.container {
+    display: flex;
+    font-size: 1.25rem;
+    border: 2px solid white 0.5%;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    padding: 150px 20px;
+    color: white;
+}
+.choices-container {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+    background-color: black;
+    /* border-radius: 10px; */
+}
+#game p {
+    padding: 5px
+}
+#question {
+    padding-bottom: 10px;
+}
+
+.choices-container:hover {
+    box-shadow: white  0px 0px 10px;
+    cursor: pointer;
+}
