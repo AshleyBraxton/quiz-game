@@ -2,7 +2,7 @@ var question = document.getElementById('question');
 var choices = Array.from(document.getElementsByClassName('choice'));
 var startBtn = document.getElementById('start-button')
 var timer = document.querySelector('.time');
-var timeLeft= 24;
+var timeLeft= 25;
 var verifyAnswer = document.querySelector('.answer-checker')
 var userscore = document.getElementsByClassName('userScore')
 var currentIndex = 0;
@@ -18,6 +18,8 @@ function setTimer() {
             clearInterval(timeSet);
             document.getElementById('score-container').style.display="block";
             document.getElementById('quiz-window').style.display="none";
+        } else if (currentIndex > availableQuestions.length - 1){
+            clearInterval(timeSet)
         }
     }, 1000);
 }
@@ -63,6 +65,7 @@ let questions = [
         choice4: "console.output()",
         answer: 1
     }
+
     
 ];
  function startGame() {
@@ -72,59 +75,48 @@ let questions = [
     availableQuestions=[...questions];
     getNewQuestion();
  };
- 
+
  function getNewQuestion() {
-    console.log(currentIndex)
-if (currentIndex > availableQuestions.length-1){
-// localStorage.setItem("time", timeLeft)
+    console.log('D',currentIndex)
+if (currentIndex > availableQuestions.length - 1){
+
 document.getElementById('score-container').style.display="block"
 document.getElementById('quiz-window').style.display="none"
 return;
 // userscore.innerText = "You scored a " + timeLeft + " please input your initials below to join highscoreboard"
 }
-    // var randomQuestion = Math.floor(Math.random() * availableQuestions.length);
-    // console.log(randomQuestion)
+
     var currentQuestion = availableQuestions[currentIndex];
     question.innerText = currentQuestion.question;
-//  console.log(currentQuestion.answer);
+
     choices.forEach(choice => {
         const number = choice.dataset["number"];
+
         choice.innerText = currentQuestion["choice" + number];
     });
 
-    // availableQuestions.splice(currentIndex, 1);
 
-
-
- choices.forEach(choice => {
+const ac = new AbortController();
+choices.forEach(choice => {
 choice.addEventListener('click', e => {
 
 
     var optionChosen = e.target;
     console.log(optionChosen)
     var userAnswer = optionChosen.dataset["number"];
-    checkAnswer(userAnswer);
-    // if (userAnswer == currentQuestion.answer) {
-    //     verifyAnswer.textContent = "Correct! Well Done" 
-    // }else if (userAnswer!== currentQuestion.answer) {
-    //     verifyAnswer.textContent = "Incorrect"  
-    //     timeLeft= timeLeft -5; 
-    // }
-    // if (timeLeft === 0) {
-    //     clearInterval(timeSet);
-    //     document.getElementById('score-container').style.display="block";
-    //     document.getElementById('quiz-window').style.display="none";
-    // }
-    // currentIndex++
-    // getNewQuestion();
+    checkAnswer(userAnswer, currentQuestion);
+    currentIndex++
+    getNewQuestion();
+    ac.abort()
 
- } )   
-     
+},{signal: ac.signal});
+
 }) 
-
 }
 
-function checkAnswer(userAnswer) {
+function checkAnswer(userAnswer, currentQuestion,) {
+    console.log('useanswer>>>>>', userAnswer)
+    console.log('currentquestion answer>>>>', currentQuestion.answer)
     if (userAnswer == currentQuestion.answer) {
         verifyAnswer.textContent = "Correct! Well Done" 
     }else if (userAnswer!== currentQuestion.answer) {
@@ -136,9 +128,8 @@ function checkAnswer(userAnswer) {
         document.getElementById('score-container').style.display="block";
         document.getElementById('quiz-window').style.display="none";
     }
-    currentIndex++
-    getNewQuestion();
+
 }
 
  startBtn.addEventListener('click', startGame)
-
+ 
