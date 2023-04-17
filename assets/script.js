@@ -26,8 +26,7 @@ function setTimer() {
             document.getElementById('score-container').style.display="block";
             document.getElementById('quiz-window').style.display="none";
         } else if (currentIndex > availableQuestions.length - 1){
-            // var finalScore = timeLeft.value
-         
+
             clearInterval(timeSet)
         }
     }, 1000);
