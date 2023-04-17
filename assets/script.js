@@ -1,14 +1,21 @@
 var question = document.getElementById('question');
 var choices = Array.from(document.getElementsByClassName('choice'));
-var startBtn = document.getElementById('start-button')
+var startBtn = document.getElementById('start-button');
 var timer = document.querySelector('.time');
 var timeLeft= 25;
-var verifyAnswer = document.querySelector('.answer-checker')
-var userscore = document.getElementsByClassName('userScore')
+var verifyAnswer = document.querySelector('.answer-checker');
+var userscore = document.getElementById('userScore');
 var currentIndex = 0;
 let currentQuestion= {};
-let score=0;
-letavailableQuestions= [];
+// let score=0;
+let availableQuestions= [];
+var userInitials = document.getElementById('userInitials');
+var submitBtn = document.getElementById('submit');
+var highscoreList = [];
+var highscoreBtn = document.getElementById('highscore-link');
+var highscoreDisplay = document.getElementById('highscore-display');
+var clearscores = document.getElementById('clear');
+var returnHome = document.getElementById('return')
 
 function setTimer() {
     var timeSet = setInterval(function () {
@@ -19,6 +26,7 @@ function setTimer() {
             document.getElementById('score-container').style.display="block";
             document.getElementById('quiz-window').style.display="none";
         } else if (currentIndex > availableQuestions.length - 1){
+
             clearInterval(timeSet)
         }
     }, 1000);
@@ -77,13 +85,12 @@ let questions = [
  };
 
  function getNewQuestion() {
-    console.log('D',currentIndex)
 if (currentIndex > availableQuestions.length - 1){
 
 document.getElementById('score-container').style.display="block"
 document.getElementById('quiz-window').style.display="none"
+userscore.textContent = "You scored a " + timeLeft + " please input your initials below to join highscoreboard"
 return;
-// userscore.innerText = "You scored a " + timeLeft + " please input your initials below to join highscoreboard"
 }
 
     var currentQuestion = availableQuestions[currentIndex];
@@ -102,7 +109,6 @@ choice.addEventListener('click', e => {
 
 
     var optionChosen = e.target;
-    console.log(optionChosen)
     var userAnswer = optionChosen.dataset["number"];
     checkAnswer(userAnswer, currentQuestion);
     currentIndex++
@@ -115,8 +121,6 @@ choice.addEventListener('click', e => {
 }
 
 function checkAnswer(userAnswer, currentQuestion,) {
-    console.log('useanswer>>>>>', userAnswer)
-    console.log('currentquestion answer>>>>', currentQuestion.answer)
     if (userAnswer == currentQuestion.answer) {
         verifyAnswer.textContent = "Correct! Well Done" 
     }else if (userAnswer!== currentQuestion.answer) {
@@ -130,6 +134,60 @@ function checkAnswer(userAnswer, currentQuestion,) {
     }
 
 }
+function takeUserscore() {
+    if (userInitials === null) {
+    return;
 
- startBtn.addEventListener('click', startGame)
- 
+    } else {
+    userInfo = {
+            Initials: userInitials.value,
+            Score: timeLeft,
+        }
+        var highscoreList = localStorage.getItem("highscoreList");
+        if (highscoreList === null) {
+            highscoreList = [];
+        } else {
+            highscoreList = JSON.parse(highscoreList);
+        }
+        highscoreList.push(userInfo);
+        var newScore = JSON.stringify(highscoreList);
+        localStorage.setItem("highscoreList", newScore);
+}
+displayHighscores()
+}
+
+
+function displayHighscores () {
+    document.getElementById('highscore-page').style.display="block"
+    document.getElementById('score-container').style.display="none" 
+    document.getElementById('quiz-start').style.display="none"  
+    // displayHighscores.empty();
+    var highscoreList = localStorage.getItem("highscoreList");
+    var parsed = JSON.parse(highscoreList);
+    if (parsed !== null) {
+
+        for (var i = 0; i < parsed.length; i++) {
+    
+            var createLi = document.createElement("li");
+            createLi.textContent = parsed[i].Initials + " " + parsed[i].Score;
+            highscoreDisplay.appendChild(createLi);
+    
+        }
+    }
+    
+
+}
+function returnToHome(){
+    window.location.reload();
+}
+function ClearHighscores(){
+localStorage.clear();
+window.location.reload();
+}
+
+
+submitBtn.addEventListener('click', takeUserscore);
+ startBtn.addEventListener('click', startGame);
+ highscoreBtn.addEventListener('click', displayHighscores);
+ returnHome.addEventListener('click', returnToHome);
+ clearscores.addEventListener('click', ClearHighscores);

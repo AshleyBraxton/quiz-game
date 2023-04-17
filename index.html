@@ -10,7 +10,7 @@
   </head>
   <body>
     <header>
-       <h1><a href=''>View Highscores</a></h1> 
+       <h1 id="highscore-link"><span>View Highscores</span></h1> 
        <h2 class="time"></h2>
     </header>
     <div class="flex" id="quiz-start">
@@ -46,8 +46,23 @@
           <div class='flex' id="user-submission">
             <h2>All Done!</h2>
             <h2 id="userScore"></h2>
+            <input id="userInitials" type="text">
             <div class="btn" id="submit">
-              <p id="submit"><span>submit</span></p>
+              <p id="submit-text"><span>submit</span></p>
             </div>
+          </div>
+          </div>
+          <div class="hide" id="highscore-page">
+            <h2 class="final-title">Highscores</h2>
+            <div id="highscore-display">
+         </div>
+         <div class="buttons">
+         <div class ="btn" id="clear">
+         <p id="clearscores"><span>Clear Scores</span></p>
+         </div>
+         <div class ="btn" id="return">
+         <p id="return-home"><span>Return</span></p>
+         </div>
+         </div>
           </div>
   </body>
