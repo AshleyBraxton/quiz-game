@@ -3,10 +3,12 @@
     margin: 0;
     box-sizing:border-box;
 }
+/* sets base margins and padding ^ */
 body {
     background-color: #333;
 
 }
+/* sets backgroundcolor for the page ^*/
 header {
     display: flex;
     justify-content: space-between;
@@ -14,22 +16,26 @@ header {
     padding-top: 5px;
 
 }
+/* spaces the highscore link and the timer in header ^ */
 h1 a {
     text-decoration: none;
     color: #D5D9DA;
     text-decoration: underline white;
     padding: 20px;
 }
+/* ^styles the highcore link to be white with an underline, with no default link settings */
 h1 {
     font-size: 1rem;
     font-family:sans-serif;
     color: white;
 }
+/* ^makes all h1's white  */
 .time {
     padding:20px;
     display: inline;
 
 }
+/* ^makes the timer display inline and sets its padding  */
 .flex {
   display:flex;
   justify-content: center;
@@ -38,23 +44,23 @@ h1 {
   color: white;
   padding: 150px 20px;
 }
+/* ^ sets the quiz page as a flexbox and sets it so questions will be centered */
 h2 {
     font-size: 1.75rem;
     color: white;
 }
+/* ^ sets size for h2's and sets them to be white  */
 .intro{
     width:80%;
 }
+/* ^sets rules paragraph to only take up 80% of page  */
 .btn {
-    /* background-color: #9AACB8; */
     display:flex;
     justify-content: center;
     align-items: center;
-    /* flex-direction: column; */
     width: 300px;
     height: 200px;
 }
-
 .btn p:hover{
     cursor: pointer;
 }
@@ -63,7 +69,6 @@ h2 {
     font-weight: bolder;
     font-family: 'segoe script';
     font-size: 1.25rem;
-    /* text-shadow: #D5D9DA 0px 3px 2px; */
     border: 2px solid white;
     padding: 15px;
     color: white;
@@ -103,7 +108,7 @@ span {
 .btn p:hover::after {
     transform: scaleX(0);
 }
-
+/* ^^^^^all of these button styles set up the appearence and animation or the button this was taken from an online source and is cited in the readme  */
 
 #quiz-window {
     display: none;
@@ -115,6 +120,7 @@ span {
     padding: 150px 20px;
     color: white;
 }
+/* ^sets up the padding and text colors, sets ites in this container to display center  */
 .choice {
     display: flex;
     position: relative;
@@ -123,9 +129,9 @@ span {
     align-items: center;
     margin: 10px;
     background-color: black;
-    /* border-radius: 10px; */
-}
 
+}
+/* ^sets the container for the answer choices to flex, in a column, and changes the background color of the choices to black */
 #game p {
     padding: 5px
 }
@@ -137,9 +143,11 @@ span {
     box-shadow: white  0px 0px 10px;
     cursor: pointer;
 }
+/* ^gives the answer choices a glow like effect when hovered */
 .hide {
     display: none;
 }
+/* ^hides different sections of the html, allowing them to be used like different pages */
 .answer-checker {
     color:white;
     font-size: 1.5rem;
@@ -153,18 +161,22 @@ span {
     display: flex;
     justify-content: center;
 }
+/* ^centers the highscore page title  */
 #highscore-display {
     display: flex;
     flex-direction: column;
     justify-content: center;
 }
+/* ^flexes highsores in a column instead of row */
 #highscore-display li {
 color: white;
 list-style: none;
 margin: 5px auto;
 background-color: black;
 }
+/* ^gets rid of bulletpoints, gives them a black background */
 .buttons {
     display: flex;
     justify-content: center;
 }
+/* ^sets the buttons on highscore page to be centered */
