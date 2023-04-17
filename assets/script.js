@@ -1,14 +1,21 @@
 var question = document.getElementById('question');
 var choices = Array.from(document.getElementsByClassName('choice'));
-var startBtn = document.getElementById('start-button')
+var startBtn = document.getElementById('start-button');
 var timer = document.querySelector('.time');
-var timeLeft= 24;
-var verifyAnswer = document.querySelector('.answer-checker')
-var userscore = document.getElementsByClassName('userScore')
+var timeLeft= 25;
+var verifyAnswer = document.querySelector('.answer-checker');
+var userscore = document.getElementById('userScore');
 var currentIndex = 0;
 let currentQuestion= {};
-let score=0;
-letavailableQuestions= [];
+// let score=0;
+let availableQuestions= [];
+var userInitials = document.getElementById('userInitials');
+var submitBtn = document.getElementById('submit');
+var highscoreList = [];
+var highscoreBtn = document.getElementById('highscore-link');
+var highscoreDisplay = document.getElementById('highscore-display');
+var clearscores = document.getElementById('clear');
+var returnHome = document.getElementById('return')
 
 function setTimer() {
     var timeSet = setInterval(function () {
@@ -18,6 +25,10 @@ function setTimer() {
             clearInterval(timeSet);
             document.getElementById('score-container').style.display="block";
             document.getElementById('quiz-window').style.display="none";
+        } else if (currentIndex > availableQuestions.length - 1){
+            // var finalScore = timeLeft.value
+         
+            clearInterval(timeSet)
         }
     }, 1000);
 }
@@ -63,6 +74,7 @@ let questions = [
         choice4: "console.output()",
         answer: 1
     }
+
     
 ];
  function startGame() {
@@ -72,59 +84,44 @@ let questions = [
     availableQuestions=[...questions];
     getNewQuestion();
  };
- 
+
  function getNewQuestion() {
-    console.log(currentIndex)
-if (currentIndex > availableQuestions.length-1){
-// localStorage.setItem("time", timeLeft)
+if (currentIndex > availableQuestions.length - 1){
+
 document.getElementById('score-container').style.display="block"
 document.getElementById('quiz-window').style.display="none"
+userscore.textContent = "You scored a " + timeLeft + " please input your initials below to join highscoreboard"
 return;
-// userscore.innerText = "You scored a " + timeLeft + " please input your initials below to join highscoreboard"
 }
-    // var randomQuestion = Math.floor(Math.random() * availableQuestions.length);
-    // console.log(randomQuestion)
+
     var currentQuestion = availableQuestions[currentIndex];
     question.innerText = currentQuestion.question;
-//  console.log(currentQuestion.answer);
+
     choices.forEach(choice => {
         const number = choice.dataset["number"];
+
         choice.innerText = currentQuestion["choice" + number];
     });
 
-    // availableQuestions.splice(currentIndex, 1);
 
-
-
- choices.forEach(choice => {
+const ac = new AbortController();
+choices.forEach(choice => {
 choice.addEventListener('click', e => {
 
 
     var optionChosen = e.target;
-    console.log(optionChosen)
     var userAnswer = optionChosen.dataset["number"];
-    checkAnswer(userAnswer);
-    // if (userAnswer == currentQuestion.answer) {
-    //     verifyAnswer.textContent = "Correct! Well Done" 
-    // }else if (userAnswer!== currentQuestion.answer) {
-    //     verifyAnswer.textContent = "Incorrect"  
-    //     timeLeft= timeLeft -5; 
-    // }
-    // if (timeLeft === 0) {
-    //     clearInterval(timeSet);
-    //     document.getElementById('score-container').style.display="block";
-    //     document.getElementById('quiz-window').style.display="none";
-    // }
-    // currentIndex++
-    // getNewQuestion();
+    checkAnswer(userAnswer, currentQuestion);
+    currentIndex++
+    getNewQuestion();
+    ac.abort()
 
- } )   
-     
+},{signal: ac.signal});
+
 }) 
-
 }
 
-function checkAnswer(userAnswer) {
+function checkAnswer(userAnswer, currentQuestion,) {
     if (userAnswer == currentQuestion.answer) {
         verifyAnswer.textContent = "Correct! Well Done" 
     }else if (userAnswer!== currentQuestion.answer) {
@@ -136,9 +133,62 @@ function checkAnswer(userAnswer) {
         document.getElementById('score-container').style.display="block";
         document.getElementById('quiz-window').style.display="none";
     }
-    currentIndex++
-    getNewQuestion();
+
+}
+function takeUserscore() {
+    if (userInitials === null) {
+    return;
+
+    } else {
+    userInfo = {
+            Initials: userInitials.value,
+            Score: timeLeft,
+        }
+        var highscoreList = localStorage.getItem("highscoreList");
+        if (highscoreList === null) {
+            highscoreList = [];
+        } else {
+            highscoreList = JSON.parse(highscoreList);
+        }
+        highscoreList.push(userInfo);
+        var newScore = JSON.stringify(highscoreList);
+        localStorage.setItem("highscoreList", newScore);
+}
+displayHighscores()
 }
 
- startBtn.addEventListener('click', startGame)
 
+function displayHighscores () {
+    document.getElementById('highscore-page').style.display="block"
+    document.getElementById('score-container').style.display="none" 
+    document.getElementById('quiz-start').style.display="none"  
+    // displayHighscores.empty();
+    var highscoreList = localStorage.getItem("highscoreList");
+    var parsed = JSON.parse(highscoreList);
+    if (parsed !== null) {
+
+        for (var i = 0; i < parsed.length; i++) {
+    
+            var createLi = document.createElement("li");
+            createLi.textContent = parsed[i].Initials + " " + parsed[i].Score;
+            highscoreDisplay.appendChild(createLi);
+    
+        }
+    }
+    
+
+}
+function returnToHome(){
+    window.location.reload();
+}
+function ClearHighscores(){
+localStorage.clear();
+window.location.reload();
+}
+
+
+submitBtn.addEventListener('click', takeUserscore);
+ startBtn.addEventListener('click', startGame);
+ highscoreBtn.addEventListener('click', displayHighscores);
+ returnHome.addEventListener('click', returnToHome);
+ clearscores.addEventListener('click', ClearHighscores);
